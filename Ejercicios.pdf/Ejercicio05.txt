@@ -5,7 +5,7 @@
 	ResultadoEnTexto Byte 5 Dub(?)
 .Data
 	;Declaramos las variables
-	Titulo Byte "Suma y Multiplicacio", 0
+	Titulo Byte "Suma y Multiplicacion", 0
 	Numero DWord 3H
 	Operador DWord 0AH
 	Resultado DWord 0H
