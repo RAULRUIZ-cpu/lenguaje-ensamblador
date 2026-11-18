@@ -1,0 +1,25 @@
+;Restar 3 a 10 con Sub
+.Const
+
+.Data?
+	ResultadoEnTexto Byte 5 Dub(?)
+.Data
+;Se declaran los valores
+	Titulo Byte "Restar 3 a 10", 0
+	Numero DWord 3H
+	Numero2 DWord 0AH
+	Resultado DWord 0H
+
+.Code
+
+
+
+start:
+	Mov Eax, Numero2
+	Sub Eax, Numero ;se resta el numero
+	Mov Resultado, Eax ;calcula el resultado
+	Invoke dwtoa, Resultado, Addr ResultadoEnTexto
+	Invoke MessageBox, 0, Addr Resultado, Addr Titulo, MB_OK
+	Invoke ExitProcess, 0
+
+End start
