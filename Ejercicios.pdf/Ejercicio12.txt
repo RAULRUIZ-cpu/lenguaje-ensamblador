@@ -1,0 +1,47 @@
+;1.Un personaje recibe 3 golpes seguidos. Cada golpe causa un daño distinto. Calcula el daño total recibido.
+;2.Si el daño total es menor a 50 (daño_total < 50), imprime "Armadura intacta".
+;3.Si el daño total es mayor o igual a 50, resta 10 al total e imprime el total.
+;4.Final: Imprimir siempre "Estado de combate actualizado".
+.Const
+
+.Data?
+ResultadoEnTexto Byte 5 Dup(?)
+.Data
+; Variables 
+Titulo        Byte  "Estado de combate", 0
+golpe1        dd    12
+golpe2        dd    18
+golpe3        dd    25
+danio_total   DD    0
+msj_armadura  Byte  "Armadura intacta", 0
+msj_final     Byte  "Estado de combate actualizado", 0
+msj_danio     Byte  "Danio final: ", 0
+Adios         Byte  "Vuelva pronto", 0
+
+.Code
+start:
+    ;Sumar los 3 golpes
+    mov eax, golpe1
+    add eax, golpe2
+    add eax, golpe3
+    Mov danio_total, Eax
+
+    ;Comparar si daño < 50
+    cmp eax, 50
+    Jb armadura_intacta   ; si es menor salta
+
+
+    sub eax, 10
+    Mov danio_total, Eax
+    ; Mostrar daño final
+    Invoke MessageBox, 0, Addr msj_danio, Addr Titulo, MB_OK
+    jmp mostrar_final
+
+armadura_intacta:
+    invoke MessageBox, 0, addr msj_armadura, addr Titulo, MB_OK
+
+mostrar_final:
+    Invoke MessageBox, 0, Addr msj_final, Addr Titulo, MB_OK
+    Invoke MessageBox, 0, Addr ResultadoEnTexto, Addr Titulo, MB_OK
+
+End start
