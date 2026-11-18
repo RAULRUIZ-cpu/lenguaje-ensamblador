@@ -1,0 +1,34 @@
+;Si una persona es menor de edad imprimir “No puede pasar” y en caso de que si sea mayor de edad “Si puede pasar”
+.Const
+
+.Data?
+
+
+.Data
+    Titulo Byte "Identificar si es mayor o menor", 0 ; Título de las ventanas
+    Edad DWord 9H                                  ; Edad de la persona (9 en decimal)
+    es_mayor_de_edad Byte "Si puede pasar", 0       ; Mensaje si tiene 18 años o más
+    es_menor_de_edad Byte "No puede pasar", 0       ; Mensaje si es menor de 18
+    adios Byte "Adios", 0                           ; Mensaje de despedida
+
+.Code
+
+start:
+    Mov Eax, Edad                  ; Guarda la edad en el registro EAX
+
+    Cmp Eax, 18                    ; Compara la edad con 18
+    Jl ejecuta_este_bloque         ; Si es menor de 18, salta al bloque indicado
+
+    ; Else: Se ejecuta si la edad es mayor o igual a 18
+    Invoke MessageBox, 0, Addr es_mayor_de_edad, Addr Titulo, MB_OK ; Muestra "Si puede pasar"
+    Jmp salida                     ; Salta a la etiqueta salida
+
+ejecuta_este_bloque:
+    Invoke MessageBox, 0, Addr es_menor_de_edad, Addr Titulo, MB_OK ; Muestra "No puede pasar"
+
+salida:
+    Invoke MessageBox, 0, Addr adios, Addr Titulo, MB_OK
+    Invoke ExitProcess, 0
+
+End start
+
