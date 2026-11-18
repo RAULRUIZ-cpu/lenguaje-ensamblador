@@ -1,0 +1,46 @@
+;Un cliente compra 3 productos distintos con diferentes cantidades. Calcula el total Producto A: Cantidad = 4, Precio = 25 Producto B: Cantidad = 2, Precio = 60 Producto C: Cantidad = 5, Precio = 15
+.Const
+
+.Data?
+	ResultadoEnTexto Byte 5 Dup(?)
+.Data
+	Titulo Byte "Problema8", 0
+	;Producto A:4 unidades x 25
+	cantA 		DWord 4H
+	precioA		DWord 19H
+
+	;Producto B:2 unidades x 60
+	cantB		DWord 2H
+	precioB		DWord 3CH
+
+	;Producto C:5 unidades x 15
+	cantC		DWord 5H
+	precioC		DWord 0FH
+	Resultado DWord 0H
+
+.Code
+
+start:
+	; 1. Limpiar el acumulador
+	Mov Ebx, 0	;EBX = 0 (Acumulador)
+
+	;2. Producto A: 4 * 25 = 100
+	Mov Eax, cantA
+	IMul Eax, precioA	;EAX = 4 * 25 = 100
+	Add Ebx, Eax		;EAX = 0 + 100 = 100
+
+	;3. Producto B: 2 * 60 = 120
+	Mov Eax, cantB
+	IMul Eax, precioB
+	Add Ebx, Eax
+
+	;4. Producto C: 5 * 15 = 75
+	Mov Eax, cantC
+	IMul Eax, precioC
+	Add Ebx, Eax
+
+	Mov Resultado, Ebx
+	Invoke dwtoa, Resultado, Addr ResultadoEnTexto
+	Invoke MessageBox, 0, Addr ResultadoEnTexto, Addr Titulo, MB_OK
+	Invoke ExitProcess, 0
+End start
