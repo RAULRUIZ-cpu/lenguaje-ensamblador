@@ -1,0 +1,26 @@
+;Ejercicio 5: Sumar 3 al valor inicial de Eax y multiplicarlo por 10 Ejercicio 5.1: Pasar a variable el valor inicial de Eax
+.Const
+
+.Data?
+	ResultadoEnTexto Byte 5 Dub(?)
+.Data
+	;Declaramos las variables
+	Titulo Byte "Suma y Multiplicacio", 0
+	Numero DWord 3H
+	Operador DWord 0AH
+	Resultado DWord 0H
+
+.Code
+
+start:
+	Mov Eax, 2
+	Add Eax, Numero ;Sumamos
+	IMul Eax, Operador ;multiplicamos
+	Mov Resultado, Eax
+	Invoke dwtoa, Resultado, Addr ResultadoEnTexto
+	Invoke MessageBox, 0, Addr Resultado, Addr Titulo, MB_OK
+	Invoke ExitProcess, 0
+
+End start
+
+
