@@ -1,0 +1,17 @@
+;Crea un nuevo programa que imprima tu
+;nombre
+
+.Const
+
+.Data
+    Nombre BYTE "Raúl", 0
+
+.Code
+start:
+    ; Mostrar el nombre en una ventana
+    Invoke MessageBoxA, 0, ADDR Nombre, ADDR Nombre, MB_OK
+
+    ; Finalizar el programa
+    Invoke ExitProcess, 0
+
+End start
