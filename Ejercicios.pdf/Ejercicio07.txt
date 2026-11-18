@@ -1,0 +1,26 @@
+;Traduce la siguiente expresión matemática a ensamblador Resultado = ((A . B) + C) - D
+.Const
+
+.Data?
+	ResultadoEnTexto Byte 5 Dub(?)
+.Data
+	Titulo Byte "Multiplicacion", 0
+	Numero DWord 03H ;Se ingresa la primer Variable
+	Numero2 DWord 05H ;Se ingresa la segundo variable
+	Numero3 DWord 07H ;Se ingresa la Tercer variable
+	Numero4 DWord 06H ;Se ingresa la Cuarta Variable
+	Resultado DWord 0H ;Se ingresa una variable resultado
+
+.Code
+
+start:
+	Mov Eax, Numero ;Agarra el valor de Numero
+	IMul Eax, Numero2 ;Multiplica el valor de nuemero2 a Eax
+	Add Eax, Numero3 ;Suma el valor de numero3 a Eax
+	Sub Eax, Numero4 ;Resta El valor de numero4 a Eax
+	Mov Resultado, Eax ;Acumula todo
+	Invoke dwtoa, Resultado, Addr ResultadoEnTexto
+	Invoke MessageBox, 0, Addr ResultadoEnTexto, Addr Titulo, MB_OK
+	Invoke ExitProcess, 0
+
+End start
