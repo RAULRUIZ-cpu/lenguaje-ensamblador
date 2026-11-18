@@ -1,0 +1,44 @@
+;1. Un sensor lee 4 muestras consecutivas de voltaje idénticas, cuyo valor base está en una variable muestra. Se calcula la suma total (muestra * 4).
+;2.Si la suma es exactamente igual a 200 (suma == 200), imprime "Voltaje optimo: balance de energia correcto".
+;3.Si no es igual a 200, imprime "Voltaje fuera de norma" y el voltaje total.
+;4.Final: Imprimir siempre "Registro guardado en memoria".
+.Const
+
+.Data?
+	ResultadoEnTexto Byte 5 Dup(?)
+.Data
+;Se señalan la variables
+	Titulo Byte "Puertas", 0
+	Comparacion DWord 210
+	peso1 DWord	70
+	peso2 DWord	70
+	;peso2 DWord 60
+	peso3 DWord	70
+	PesoIgual Byte "Carga de calibracion exacta destacada", 0
+	Diferente Byte "Carga estandar de operacion", 0
+	adios Byte "Puertas Cerrandose", 0
+	pesoTotal DWord 0H
+
+.Code
+
+start:
+	Mov Eax, peso1
+	Add Eax, peso2 ;Suma
+	Add Eax, peso3 ;Se suma el resultado de la suma
+	Mov pesoTotal, Eax ;se calcula el total
+
+	Cmp Eax, Comparacion ;comparamos con la variable "Comparacion"
+	Je ejecuta_este_bloque
+	Invoke dwtoa, Eax, Addr ResultadoEnTexto
+	Invoke MessageBox, 0, Addr Diferente, Addr Titulo, MB_OK
+	Invoke MessageBox, 0, Addr ResultadoEnTexto, Addr Titulo, MB_OK
+	Jmp Salida
+
+ejecuta_este_bloque:
+	Invoke MessageBox, 0, Addr PesoIgual, Addr Titulo, MB_OK
+Salida:
+	Invoke MessageBox, 0, Addr adios, Addr Titulo, MB_OK
+
+	Invoke ExitProcess, 0
+
+End start
