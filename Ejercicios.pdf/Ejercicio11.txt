@@ -1,0 +1,39 @@
+;1.Un cliente compra 4 veces el mismo producto, el costo del producto es una variable. 
+;2.Si el total por los 4 productos es menor de 60, entonces imprime “No hay descuento”
+;3.En caso de que sea mayor a >= 60 entonces descuenta 10 e imprime el total
+;4.Por ultimo un mnesaje de “Vuelva pronto”
+.Const
+
+.Data?
+    ResultadoEnTexto Byte 5 Dup(?) ; Reserva 5 espacios para guardar el resultado en texto
+
+.Data
+    Titulo Byte "Compra de 4 productos", 0 ; Título de la ventana
+    Producto DWord 13H                    ; Precio de un producto (19 en decimal)
+    Multiplicacion DWord 4H               ; Cantidad de productos (4)
+    NoHayDescuento Byte "No hay descuento", 0 ; Mensaje cuando no hay descuento
+    Resultado DWord 0H                    ; Variable para guardar el resultado
+    Adios Byte "Vuelva pronto", 0                 ; Mensaje de despedida
+
+.Code
+
+start:
+    Mov Eax, Producto          ; Guarda el precio del producto en EAX
+    IMul Eax, Multiplicacion   ; Multiplica el precio por la cantidad de productos
+    Cmp Eax, 60                ; Compara el total con 60
+    Jl No_Descuento            ; Si el total es menor que 60, salta a No_Descuento
+
+    Sub Eax, 10                ; Resta 10 al total como descuento
+    Mov Resultado, Eax        ; Guarda el resultado final en la variable Resultado
+    Invoke dwtoa, Resultado, Addr ResultadoEnTexto ; Convierte el resultado a texto
+    Invoke MessageBox, 0, Addr ResultadoEnTexto, Addr Titulo, MB_OK ; Muestra el total con descuento
+    Jmp Salida                 ; Salta a la etiqueta Salida
+
+No_Descuento:
+    Invoke MessageBox, 0, Addr NoHayDescuento, Addr Titulo, MB_OK ; Muestra que no hay descuento
+
+Salida:
+    Invoke MessageBox, 0, Addr Adios, Addr Titulo, MB_OK ; Muestra el mensaje de despedida
+    Invoke ExitProcess, 0
+
+End start
