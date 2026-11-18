@@ -1,0 +1,1 @@
+;Dadas las dimensiones de un rectángulo, calcula de forma su perímetro y su área. Perímetro = 2 x (base + altura) Área = base x altura
