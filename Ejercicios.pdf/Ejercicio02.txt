@@ -1,1 +1,29 @@
 ;Suma de dos números
+.Const
+
+.Data?
+	;5 bytes son suficientes Para números pequeños
+	ResultadoEnTexto Byte 5 Dup(?)
+.Data
+	;Se declaran las Variables
+	NumeroUno DWord 0AH
+	NumeroDos DWord 0FH
+	Resultado DWord 0H
+.Code
+
+start:
+;mueve el valor del primer numero 
+	Mov Eax, NumeroUno
+;Suma el segundo numero 
+	Add Eax, NumeroDos
+;Guarda el resultado de EAX 
+	Mov Resultado, Eax
+;Convierte el numero entero a texto
+	Invoke dwtoa, Resultado, Addr ResultadoEnTexto
+;muestra una ventana emergente con el resultado
+	Invoke MessageBox, 0, Addr ResultadoEnTexto, NULL, MB_OK
+;termina el programa y cierra el proceso
+	Invoke ExitProcess, 0
+
+End start
+
