@@ -2,3 +2,40 @@
 ;2.Si el aumento es estrictamente mayor a 80 (aumento > 80), activa los ventiladores restando 15 al valor proyectado e imprime "Peligro: refrigeracion liquida al maximo".
 ;3.Si es menor o igual a 80, imprime "Temperatura dentro de rango seguro" y la temperatura.
 ;4.Final: Imprimir siempre "Lectura del socket finalizada".
+.Const
+
+.Data?
+	ResultadoEnTexto Byte 12 Dup(?)
+.Data
+;valores para la temperantura y el total
+	temp_subida DWord 19
+	aumento DWord 0
+;titulo y mensajes de la caja de mensajes
+	titulo Byte "Control térmico", 0
+	msj_peligro Byte "Peligro:refrigeracion liquida al maximo.", 0
+	msj_seguro Byte "Temperatura dentro de rango seguro", 0
+	msj_final Byte "Lectura del socket finalizada", 0
+.Code
+
+start:
+	Mov Eax, temp_subida ;eax adquiere el valor de temp_subida
+	IMul Eax, 4 ;se multiplica por 4
+	Mov aumento, Eax ;aumento adquiere el total
+	Cmp aumento, 80 ;aumento se compara con 80
+	Jg peligro ;se crea un bloque por si es mayor
+;bloque que se ejecuta si aumento es menor o igual a 80
+	;se muestra un mensaje, el numero se convierte a texto y se muestra el resultado
+	Invoke MessageBox, 0, Addr msj_seguro, Addr titulo, MB_OK
+	Invoke dwtoa, aumento, Addr ResultadoEnTexto
+	Invoke MessageBox, 0, Addr ResultadoEnTexto, Addr titulo, MB_OK
+	Jmp final ;se brinca al mensaje final
+;bloque que se ejecuta si aumento es mayor a 80
+peligro:
+	Sub aumento, 15 ;a aumento se le resta 15 y se muestra un mensaje
+	Invoke MessageBox, 0, Addr msj_peligro, Addr titulo, MB_OK
+;bloque que se ejecuta al final del programa
+final:
+	Invoke MessageBox, 0, Addr msj_final, Addr titulo, MB_OK
+	Invoke ExitProcess, 0 ;se termina el programa
+End start
+
