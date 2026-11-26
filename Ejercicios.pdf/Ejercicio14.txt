@@ -2,3 +2,44 @@
 ;2.Si el peso acumulado es exactamente igual a 210 (peso_total == 210), imprime "Carga de calibración exacta detectada".
 ;3.Si no es igual a 210, imprime "Carga estándar de operación" y el peso total.
 ;4.Final: Imprimir siempre "Puertas cerrandose"
+.Const
+
+.Data?
+	ResultadoEnTexto Byte 5 Dup(?)
+.Data
+	comparacion DWord 210 ;numero con el que se va a comparar
+	titulo Byte "Calculo de peso", 0 ;titulo 
+;mensajes que van a aparecer 
+	msj_exacto Byte "carga de calibracion exacta detectada", 0
+	msj_diferente Byte "Carga estandar de operacion", 0
+;mensaje de despedida
+	msj_final Byte "Puertas cerrandose", 0
+	persona1 DWord 60
+;	persona1 DWord 80
+	persona2 DWord 70
+	persona3 DWord 80
+	peso_total DWord 0
+.Code
+
+start:
+	Mov Eax, persona1 ;Eax adquiere el valor de persona1
+	Add Eax, persona2 ;El valor de persona2 se suma a Eax
+	Add Eax, persona3 ;El valor de persona3 se suma a Eax
+	Mov peso_total, Eax ;peso_total agarra el valor de Eax
+	Cmp Eax, comparacion ;Eax se compara con comparacion(210)
+	Je igual ;se crea el bloque para el caso de que sea igual
+;si es diferente
+;el numero se convierte a texto
+	Invoke dwtoa, Eax, Addr ResultadoEnTexto
+;Se muestra un mensaje y el peso total y salta al mensaje final
+	Invoke MessageBox, 0, Addr msj_diferente, Addr titulo, MB_OK
+	Invoke MessageBox, 0, Addr ResultadoEnTexto, Addr titulo, MB_OK
+	Jmp final
+;si es igual se muestra un mensaje 
+igual:
+	Invoke MessageBox, 0, Addr msj_exacto, Addr titulo, MB_OK
+;se muestra un mensaje al finalizar y se termina el programa 
+final:
+	Invoke MessageBox, 0, Addr msj_final, Addr titulo, MB_OK
+	Invoke ExitProcess, 0
+End start
