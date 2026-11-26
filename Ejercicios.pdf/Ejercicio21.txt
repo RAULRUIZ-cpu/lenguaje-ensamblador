@@ -2,3 +2,39 @@
 ;2.Si la experiencia acumulada es mayor o igual a 120 (exp >= 120), aumenta 1 nivel al personaje e imprime "Subiste de nivel!".
 ;3.Si es menor a 120, imprime "Puntos acumulados: nivel insuficiente" y el total.
 ;4.Final: Imprimir siempre "Guardando progreso del juego"
+.Const
+
+.Data?
+	ResultadoEnTexto Byte 5 Dup(?)
+.Data
+  ;Declara Variables
+	enemigo1 DWord 30
+	enemigo2 DWord 40
+	enemigo3 DWord 20
+	enemigo4 DWord 50
+	exp DWord 0
+  ;mensaje que se mostrara al final
+	titulo Byte "experiencia ", 0
+	msj_subida Byte "¡Subiste de nivel!", 0
+	msj_insuficiente Byte "Puntos acumulados: nivel insuficient.e", 0
+	msj_final Byte "Guardando progreso del juego.", 0
+.Code
+
+start:
+	Move Eax, enemigo1 ;Mueve el valor de enemigo1
+	Add Eax, enemigo2 ;suma enemigo2
+	Add Eax, enemigo3 ;suma enemigo3
+	Add Eax, enemigo4 ;suma enemigo4
+	Move exp, Eax ;mueve el resultado a Eax y lo mueve a exp
+	Cmp exp, 120 ;compara exp
+	Jge subida
+	Invoke MessageBox, 0, Addr msj_insuficiente, Addr titulo, MB_OK
+	Invoke dwtoa, exp, Addr ResultadoEnTexto
+	Invoke MessageBox, 0, Addr ResultadoEnTexto, Addr titulo, MB_OK
+	Jmp final
+subida:
+	Invoke MessageBox, 0, Addr msj_subida, Addr titulo, MB_OK
+final:
+	Invoke MessageBox, 0, Addr msj_final, Addr titulo, MB_OK
+	Invoke ExitProcess, 0 ;se termina el codigo
+End start
