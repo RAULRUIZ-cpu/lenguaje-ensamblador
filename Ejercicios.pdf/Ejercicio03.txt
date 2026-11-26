@@ -5,7 +5,6 @@
 ;Espacio reservado para guardar el resultado convertido a texto	
 	ResultadoEnTexto Byte 5 Dup(?)
 .Data
-;
 	Titulo Byte "SUMA de 4", 0
   ;Se declaran las variables
 	NumeroUno DWord 5H
