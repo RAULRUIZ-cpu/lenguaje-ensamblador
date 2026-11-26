@@ -1,1 +1,21 @@
 ;Multiplicar 2 números
+.Const
+
+.Data?
+	ResultadoEnTexto Byte 5 Dup(?)
+.Data
+	titulo Byte "Multiplicacion", 0; es el titulo de la caja de texto
+	operador DWord 0AH ; numero por el que se va a multiplicar(10)
+	Resultado DWord 0H ;es donde se va a guardar el resultado se inicia en 0
+.Code
+
+start:
+	Mov Eax, 2 ;eax agarra el valor de 2
+	IMul Eax, operador ;eax(2) se multiplica
+	Mov Resultado, Eax ;resultado agarra el valor de la multiplicación
+;se convierte el resultado a texto
+	Invoke dwtoa, Resultado, Addr ResultadoEnTexto
+;se crea la caja de texto y se le agrega el resultado y el titulo
+	Invoke MessageBox, 0, Addr ResultadoEnTexto, Addr titulo, MB_OK
+	Invoke ExitProcess, 0 ;se cierra el programa
+End start
