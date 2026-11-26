@@ -2,3 +2,37 @@
 ;2.Si los créditos acumulados son mayor o igual a 45 (creditos >= 45), imprime "Habilitado para tramite de servicio social".
 ;3.Si es menor a 45, imprime "Creditos pendientes para liberacion".
 ;4.Final: Imprimir siempre "Consulta de expediente concluida"
+.Const
+
+.Data?
+	ResultadoEnTexto Byte 5 Dup(?)
+.Data
+  ;Se declara las variables
+	materia1 DWord 10
+	materia2 DWord 15
+	materia3 DWord 5
+	creditos DWord 0
+  ;se pondra este mensaje al final
+	titulo Byte "Creditos", 0
+	msj_servicio Byte "Habilitado para tramite de servicio social", 0
+	msj_liberacion Byte "Creditos pendientes para liberacion", 0
+	msj_final Byte "Consulta de expediente concluida", 0
+.Code
+
+start:
+	Mov Eax, materia1 ;mueve el valor de materia1
+	Add Eax, materia2 ;suma materia2
+	Add Eax, materia3 ;suma materia3
+	Mov creditos, Eax ;mueve el Eax al resultado
+	Cmp creditos, 45 ;se compara el resultado
+	Jge servicio
+	Invoke MessageBox, 0, Addr msj_liberacion, Addr titulo, MB_OK
+	Jmp final
+servicio:
+	Invoke MessageBox, 0, Addr msj_servicio, Addr titulo, MB_OK
+final:
+	Invoke MessageBox, 0, Addr msj_final, Addr titulo, MB_OK
+	Invoke ExitProcess, 0 ;se termina el codigo
+
+End start
+
