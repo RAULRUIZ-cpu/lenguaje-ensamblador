@@ -2,3 +2,47 @@
 ;2.Si la suma es estrictamente mayor a 1000 (pasos > 1000), suma 100 pasos extra de bonificación e imprime "Meta diaria superada con bonus".
 ;3.Si es menor o igual a 1000, imprime "Objetivo basico alcanzado" y el total.
 ;4.Final: Imprimir siempre "Sincronizando reloj"
+.Const
+
+.Data?
+	ResultadoEnTexto Byte 5 Dup(?)
+.Data
+;valores para cada tramo y el total de pasos  
+	tramo1 DWord 200
+	tramo2 DWord 180
+	tramo3 DWord 220
+	tramo4 DWord 190
+	tramo5 DWord 210
+	pasos DWord 0
+;titulo y mensajes 
+	titulo Byte "Contador de pasos", 0
+	msj_bonus Byte "Meta diaria superada con bonus", 0
+	msj_basico Byte "Objetivo basico alcanzado", 0
+	msj_final Byte "Sincronizando reloj", 0
+.Code
+
+start:
+	Mov Eax, tramo1 ;eax adquiere el valor del tramo1
+	Add Eax, tramo2 ;se suma el tramo2
+	Add Eax, tramo3 ;se suma el tramo3
+	Add Eax, tramo4 ;se suma el tramo4
+	Add Eax, tramo5 ;se suma el tramo5
+	Mov pasos, Eax ;pasos adquiere el valor del total de la operacion
+	Cmp pasos, 1000 ;pasos se compara con 100
+	Jg bonus ;se crea un bloque por si pasos es mayor a 1000
+;bloque que se ejecuta si pasos es menor o igual a 1000
+	;se muestra un mensaje,el numero se convierte a texto y se muestra el resultado
+	Invoke MessageBox, 0, Addr msj_basico, Addr titulo, MB_OK
+	Invoke dwtoa, pasos, Addr ResultadoEnTexto
+	Invoke MessageBox, 0, Addr ResultadoEnTexto, Addr titulo, MB_OK
+	Jmp final ;brinca al mensaje final
+;bloque que se ejecuta si pasos es mayor a 1000
+bonus:
+	;se suma 100 a pasos y se muestra un mensaje
+	Add pasos, 100
+	Invoke MessageBox, 0, Addr msj_bonus, Addr titulo, MB_OK
+;bloque que se ejecuta al final del programa
+final:
+	Invoke MessageBox, 0, Addr msj_final, Addr titulo, MB_OK
+	Invoke ExitProcess, 0 ;se termina el programa
+End start
