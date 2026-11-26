@@ -2,3 +2,42 @@
 ;2.Si el total acumulado es diferente de 0 (fallos != 0), suma 1 al contador de alertas de seguridad e imprime "Alerta: actividad sospechosa detectada".
 ;3.Si es igual a 0, imprime "Acceso sin incidentes".
 ;4.Final: Imprimir siempre "Fin de auditoria"
+.Const
+
+.Data?
+	ResultadoEnTexto Byte 5 Dup(?)
+.Data
+;titulo y mensajes 
+	titulo Byte 'Auditoria de seguridad', 0
+	msj_total Byte 'Total de fallos: ', 0
+	msj_alerta Byte 'Alerta: actividad sospechosa detectada.', 0
+	msj_ok Byte 'Acceso sin incidentes.', 0
+	msj_final Byte 'Fin de auditoria.', 0
+;fallos
+	fallo1 DWord 2
+	fallo2 DWord 0
+	fallo3 DWord 1
+;total de fallos
+	fallos DWord 0
+	alertas DWord 0
+.Code
+
+start:
+	Mov Eax, fallo1 ;eax adquiere el valor de fallo1
+	Add Eax, fallo2 ;se suma el valor de fallo2
+	Add Eax, fallo3 ;se suma el valor de fallo3
+	Mov fallos, Eax ;fallos adquiere el valor de la suma
+	Cmp fallos, 0 ;fallos se compara con 0
+	Je no_incidentes ;se crea un bloque para el caso en el que fallos se igual a 0
+	;bloque que se ejecuta si los fallos son diferentes a 0
+	Inc alertas ;incrementa 1 al contador de alertas
+	Invoke MessageBox, 0, Addr msj_alerta, Addr titulo, MB_OK
+	Jmp final ;salta al bloque final
+;bloque que se ejecuta si fallos es igual a 0
+no_incidentes:
+	Invoke MessageBox, 0, Addr msj_ok, Addr titulo, MB_OK
+;bloque que se ejecuta al final del programa
+final:
+	Invoke MessageBox, 0, Addr msj_final, Addr titulo, MB_OK
+	Invoke ExitProcess, 0 ;se termina el programa
+End start
