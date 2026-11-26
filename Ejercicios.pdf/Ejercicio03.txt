@@ -1,1 +1,36 @@
 ;Suma de cuatro números
+.Const
+
+.Data?
+;Espacio reservado para guardar el resultado convertido a texto	
+	ResultadoEnTexto Byte 5 Dup(?)
+.Data
+;
+	Titulo Byte "SUMA de 4", 0
+  ;Se declaran las variables
+	NumeroUno DWord 5H
+	NumeroDos DWord 9H
+	NumeroTres DWord 0CH
+	NumeroCuatro DWord 0EH
+  Resultado DWord 0H
+.Code
+
+start:
+;mueve el valor del primer numero
+	Mov Eax, NumeroUno
+;suma el segundo numero 
+	Add Eax, NumeroDos
+;suma el tercer numero  
+	Add Eax, NumeroTres
+;suma el cuarto numero 
+	Add Eax, NumeroCuatro
+;guarda el resultado de EAX 
+	Mov Resultado, Eax
+;convierte el numero entero a texto
+	Invoke dwtoa, Resultado, Addr ResultadoEnTexto
+;muestra una ventana emergente con el resultado
+	Invoke MessageBox, 0, Addr ResultadoEnTexto, Addr Titulo, MB_OK
+;termina el programa y cierra el proceso
+	Invoke ExitProcess, 0
+
+End start
