@@ -2,4 +2,44 @@
 ;2.Si el índice es diferente de 100 (indice != 100), imprime "Regulando flujo de combustible" y ajusta el índice restando 5.
 ;3.Si el índice es exactamente 100, imprime "Velocidad de crucero estabilizada"y el indice.
 ;4.Final: Imprimir siempre "Ciclo de control completado".
+.Const
+
+.Data?
+	ResultadoEnTexto Byte 5 Dup(?)
+.Data
+;titulo y mensajes 
+	titulo Byte "Control de turbina", 0
+	msj_regular Byte "Regulando flujo de combustible", 0
+	msj_estable Byte "Velocidad de crucero estabilizada", 0
+	msj_final Byte "Ciclo de control completado", 0
+;valores para la aceleracion y para guardar el total
+	acel DWord 20
+	indice DWord 0
+.Code
+
+start:
+	Mov Eax, acel ;eax adquiere el valor de acel(aceleracion)
+	IMul Eax, 5 ;se multiplica por 5
+	Mov indice, Eax ;indice adquiere el valor total de la operacion
+	Cmp indice, 100 ;indice se compara con 100
+	Je estabilizada ;se crea un bloque por si es igual 100
+;bloque que se ejecuta si indice es diferente de 100
+	;se muestra un mensaje de regulación
+	Invoke MessageBox, 0, Addr msj_regular, Addr titulo, MB_OK
+	Mov Eax, indice ;eax adquiere el valor de indice
+	Sub Eax, 5 ;se le resta 5
+	Mov indice, Eax ;indice adquiere el valor del resultado
+	Jmp final ;salta al mensaje final
+;bloque que se ejecuta si indice es igual a 100
+estabilizada:
+	;se muestra un mensaje, el resultado se convierte a texto y se muestra
+	Invoke MessageBox, 0, Addr msj_estable, Addr titulo, MB_OK
+	Invoke dwtoa, indice, Addr ResultadoEnTexto
+	Invoke MessageBox, 0, Addr ResultadoEnTexto, Addr titulo, MB_OK
+;bloque que se ejecuta al final del programa
+final:
+	Invoke MessageBox, 0, Addr msj_final, Addr titulo, MB_OK
+	Invoke ExitProcess, 0 ;se termina el programa
+
+End start
 
