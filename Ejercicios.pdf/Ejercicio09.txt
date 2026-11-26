@@ -1,1 +1,36 @@
 ;Dadas las dimensiones de un rectángulo, calcula de forma su perímetro y su área. Perímetro = 2 x (base + altura) Área = base x altura
+.Const
+
+.Data?
+	ResultadoEnTexto Byte 5 Dup(?)
+.Data
+	titulo1 Byte "perimetro del rectangulo", 0 ;titulo 
+	titulo2 Byte "área del rectángulo", 0 ;titulo 2
+	base DWord 0AH ;base se declara como 10
+	altura DWord 5H ;altura se declara como 5
+	n2 DWord 2H ;n2 se declara como 2
+	;area y perimetro van a mostrar los resultados asi que se declaran com 0
+	area DWord 0H 
+	perimetro DWord 0H
+.Code
+
+start:
+;perimetro
+	Mov Ebx, 0 ;acumulador
+	Mov Eax, base ;eax se declara con el valor de base
+	Add Eax, altura ;a eax se le suma el valor de altura
+	IMul Eax, dos ;a eax se le multiplica el valor de dos 
+	Add Ebx, Eax ;eax se pasa a ebx
+	Mov perimetro, Ebx ;el valor de ebx se pasa a perimetro
+;area
+	Mov Eax, base ;eax se declara con el valor de base
+	IMul Eax, altura ;a eax se le multiplica el valor de altura
+	Mov area, Eax ;el valor de ebx se pasa a area
+;caja de texto que muestra el resultado del perimetro
+	Invoke dwtoa, perimetro, Addr ResultadoEnTexto
+	Invoke MessageBox, 0, Addr ResultadoEnTexto, Addr titulo1, MB_OK
+;caja de texto que muestra el resultado del area
+ 	Invoke dwtoa, area, Addr ResultadoEnTexto
+	Invoke MessageBox, 0, Addr ResultadoEnTexto, Addr titulo2, MB_OK
+
+End start
