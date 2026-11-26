@@ -2,3 +2,43 @@
 ;2.Si el tamaño total es menor o igual a 64 (buffer <= 64), imprime "Buffer seguro: listo para procesar".
 ;3.Si es estrictamente mayor a 64, imprime "Riesgo de desbordamiento: descartando paquete" y resta 16 al búfer e imprime el total.
 ;4.Final: Imprimir siempre "Canal libre".
+.Const
+
+.Data?
+ 	ResultadoEnTexto Byte 5 Dup(?)
+.Data
+  ;Se declaran las variables de cada caja
+	paquete1 DWord 12
+	paquete2 DWord 15
+	paquete3 DWord 18
+	paquete4 DWord 10
+	buffer DWord 0
+  ;titulo y mensajes
+	titulo Byte "Paquetes", 0
+	msj_seguro Byte "Buffer seguro: listo para procesar.", 0
+	msj_riesgo Byte "Riesgo de desbordamiento: descartando paquete.", 0
+	msj_final  Byte "Canal libre.", 0
+.Code
+
+start:
+	Move Eax, paquete1 ;eax adquiere el valor de paquete1
+	Add Eax, paquete2 ;suma al paquete2
+	Add Eax, paquete3 ;suma al paquete3
+	Add Eax, paquete4 ;suma al paquete4
+	Move buffer, Eax ;mueve el resultado a Eax
+	Cmp buffer, 64
+	Jle seguro
+	Sub buffer, 16
+	Invoke MessageBox, 0, Addr msj_riesgo, Addr titulo, MB_OK
+	Invoke dwtoa, buffer, Addr ResultadoEnTexto
+	Invoke MessageBox, 0, Addr ResultadoEnTexto, Addr titulo, MB_OK
+	Jmp final
+seguro:
+	Invoke MessageBox, 0, Addr msj_seguro, Addr titulo, MB_OK
+final:
+	Invoke MessageBox, 0, Addr msj_final, Addr titulo, MB_OK
+	Invoke ExitProcess, 0 ;se termina el codigo
+End start
+
+
+
