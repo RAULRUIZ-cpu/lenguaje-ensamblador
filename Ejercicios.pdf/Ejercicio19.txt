@@ -2,3 +2,42 @@
 ;2.Si el combustible gastado es menor o igual a 30 (consumo <= 30), imprime "Consumo eficiente: modo crucero activo".
 ;3.Si supera los 30, imprime "Consumo excesivo: reduciendo potencia de impulso" y reduce la potencia en 10 e imprime el total.
 ;4.Final: Imprimir siempre "Telemetria transmitida".
+.Const
+
+.Data?
+	ResultadoEnTexto Byte 5 Dup(?)
+.Data
+;valores da los gastos y el consumo total
+	gasto_sector1 DWord 5
+	gasto_sector2 DWord 10
+	gasto_sector3 DWord 7
+	consumo DWord 0
+;titulo y mensajes 
+	titulo Byte "Consumo de combustible", 0
+	msj_eficiente Byte "Consumo eficiente: modo crucero activo", 0
+	msj_excesivo Byte "Consumo excesivo: reduciendo potencia de impulso", 0
+	msj_final Byte "Telemetria transmitida", 0
+.Code
+
+start:
+	Mov Eax, gasto_sector1 ;eax adquiere el valor de gasto_sector1
+	Add Eax, gasto_sector2 ;se suma el valor de gasto_sector2
+	Add Eax, gasto_sector3 ;se suma el valor de gasto_sector3
+	Mov consumo, Eax ;consumo adquiere el valor del total
+	Cmp consumo, 30 ;consumo se compara con 30
+	Jle eficiente ;se crea un bloque por si consumo es menor o igual a 30
+;bloque que se ejecuta si consumo es mayor a 30
+	Sub consumo, 10 ;se resta 10 a consumo
+	;se muestra un mensaje, se convierte el resultado a texto y se muestra
+	Invoke MessageBox, 0, Addr msj_excesivo, Addr titulo, MB_OK
+	Invoke dwtoa, consumo, Addr ResultadoEnTexto
+	Invoke MessageBox, 0, Addr ResultadoEnTexto, Addr titulo, MB_OK
+	Jmp final ;salta al mensaje final
+;bloque que se ejecuta si consumo es menor o igual a 30
+eficiente:
+	Invoke MessageBox, 0, Addr msj_eficiente, Addr titulo, MB_OK
+;bloque que se ejecuta al final del programa
+final:
+	Invoke MessageBox, 0, Addr msj_final, Addr titulo, MB_OK
+	Invoke ExitProcess, 0 ;se termina el programa
+End start
