@@ -21,7 +21,7 @@
 .Code
 
 start:
-	Move Eax, paquete1 ;eax adquiere el valor de paquete1
+	Mov Eax, paquete1 ;eax adquiere el valor de paquete1
 	Add Eax, paquete2 ;suma al paquete2
 	Add Eax, paquete3 ;suma al paquete3
 	Add Eax, paquete4 ;suma al paquete4
